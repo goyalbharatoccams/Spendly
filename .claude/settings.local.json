@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash (git init)",
+      "Websearch"
+    ]
+  },
+  "deniedMcpServers": [
+    { "url": "https://mcp.figma.com/mcp" }
+  ]
+}
