@@ -6,6 +6,6 @@
     ]
   },
   "deniedMcpServers": [
-    { "url": "https://mcp.figma.com/mcp" }
+    { "serverUrl": "https://mcp.figma.com/mcp" }
   ]
 }
