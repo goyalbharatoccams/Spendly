@@ -1,0 +1,156 @@
+{% extends "base.html" %}
+
+{% block title %}Add Expense — Spendly{% endblock %}
+
+{% block content %}
+
+<div class="ae-page">
+    <div class="ae-wrap">
+
+        <!-- Page header -->
+        <div class="ae-header">
+            <a href="{{ url_for('profile') }}" class="ae-back">
+                <i data-lucide="arrow-left"></i>
+                <span>Back</span>
+            </a>
+            <h1 class="ae-page-title">New Expense</h1>
+        </div>
+
+        <form method="POST" action="{{ url_for('add_expense') }}" class="ae-form">
+
+            {% if error %}
+            <div class="ae-error">
+                <i data-lucide="triangle-alert"></i>
+                <span>{{ error }}</span>
+            </div>
+            {% endif %}
+
+            <!-- Amount hero -->
+            <div class="ae-amount-hero">
+                <span class="ae-currency-symbol">₹</span>
+                <input type="number" id="amount" name="amount"
+                       class="ae-amount-input"
+                       placeholder="0.00"
+                       step="0.01" min="0.01"
+                       value="{{ amount or '' }}"
+                       required autofocus>
+            </div>
+            <p class="ae-amount-hint">Enter the amount spent</p>
+
+            <!-- Category grid -->
+            <div class="ae-section">
+                <p class="ae-section-label">Category</p>
+                <div class="ae-cat-grid">
+
+                    <label class="ae-cat-item">
+                        <input type="radio" name="category" value="Food" {% if category == 'Food' %}checked{% endif %} required>
+                        <span class="ae-cat-box ae-cat-box--food">
+                            <i data-lucide="utensils"></i>
+                            <span>Food</span>
+                        </span>
+                    </label>
+
+                    <label class="ae-cat-item">
+                        <input type="radio" name="category" value="Transport" {% if category == 'Transport' %}checked{% endif %}>
+                        <span class="ae-cat-box ae-cat-box--transport">
+                            <i data-lucide="car"></i>
+                            <span>Transport</span>
+                        </span>
+                    </label>
+
+                    <label class="ae-cat-item">
+                        <input type="radio" name="category" value="Bills" {% if category == 'Bills' %}checked{% endif %}>
+                        <span class="ae-cat-box ae-cat-box--bills">
+                            <i data-lucide="zap"></i>
+                            <span>Bills</span>
+                        </span>
+                    </label>
+
+                    <label class="ae-cat-item">
+                        <input type="radio" name="category" value="Health" {% if category == 'Health' %}checked{% endif %}>
+                        <span class="ae-cat-box ae-cat-box--health">
+                            <i data-lucide="heart-pulse"></i>
+                            <span>Health</span>
+                        </span>
+                    </label>
+
+                    <label class="ae-cat-item">
+                        <input type="radio" name="category" value="Entertainment" {% if category == 'Entertainment' %}checked{% endif %}>
+                        <span class="ae-cat-box ae-cat-box--entertainment">
+                            <i data-lucide="clapperboard"></i>
+                            <span>Fun</span>
+                        </span>
+                    </label>
+
+                    <label class="ae-cat-item">
+                        <input type="radio" name="category" value="Shopping" {% if category == 'Shopping' %}checked{% endif %}>
+                        <span class="ae-cat-box ae-cat-box--shopping">
+                            <i data-lucide="shopping-bag"></i>
+                            <span>Shopping</span>
+                        </span>
+                    </label>
+
+                    <label class="ae-cat-item">
+                        <input type="radio" name="category" value="Other" {% if category == 'Other' %}checked{% endif %}>
+                        <span class="ae-cat-box ae-cat-box--other">
+                            <i data-lucide="circle-ellipsis"></i>
+                            <span>Other</span>
+                        </span>
+                    </label>
+
+                </div>
+            </div>
+
+            <!-- Details -->
+            <div class="ae-section ae-details">
+
+                <div class="ae-field">
+                    <label for="date">
+                        <i data-lucide="calendar"></i>
+                        Date
+                    </label>
+                    <input type="date" id="date" name="date"
+                           class="ae-input"
+                           value="{{ date or '' }}"
+                           required>
+                </div>
+
+                <div class="ae-field">
+                    <label for="description">
+                        <i data-lucide="pencil-line"></i>
+                        Note <span class="ae-optional">optional</span>
+                    </label>
+                    <input type="text" id="description" name="description"
+                           class="ae-input"
+                           placeholder="What was this for?"
+                           value="{{ description or '' }}">
+                </div>
+
+            </div>
+
+            <!-- Actions -->
+            <div class="ae-actions">
+                <a href="{{ url_for('profile') }}" class="ae-btn-ghost">Cancel</a>
+                <button type="submit" class="ae-btn-primary">
+                    <i data-lucide="check"></i>
+                    Save Expense
+                </button>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+lucide.createIcons();
+// Keep amount input formatted nicely
+document.getElementById('amount').addEventListener('blur', function () {
+    if (this.value && parseFloat(this.value) > 0) {
+        this.value = parseFloat(this.value).toFixed(2);
+    }
+});
+</script>
+{% endblock %}
