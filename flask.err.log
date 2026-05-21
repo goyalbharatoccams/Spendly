@@ -127,3 +127,12 @@ Press CTRL+C to quit
 127.0.0.1 - - [20/May/2026 22:37:19] "GET / HTTP/1.1" 200 -
 127.0.0.1 - - [20/May/2026 22:37:19] "GET /static/css/style.css HTTP/1.1" 304 -
 127.0.0.1 - - [20/May/2026 22:37:19] "GET /static/js/main.js HTTP/1.1" 304 -
+127.0.0.1 - - [21/May/2026 09:39:40] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [21/May/2026 09:39:40] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [21/May/2026 09:39:40] "GET /static/js/main.js HTTP/1.1" 304 -
+127.0.0.1 - - [21/May/2026 09:40:14] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [21/May/2026 09:40:14] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [21/May/2026 09:40:14] "GET /static/js/main.js HTTP/1.1" 304 -
+127.0.0.1 - - [21/May/2026 09:40:17] "GET /register HTTP/1.1" 200 -
+127.0.0.1 - - [21/May/2026 09:40:17] "GET /static/css/style.css HTTP/1.1" 304 -
+127.0.0.1 - - [21/May/2026 09:40:17] "GET /static/js/main.js HTTP/1.1" 304 -
