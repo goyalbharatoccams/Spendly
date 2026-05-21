@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for, session
 from werkzeug.security import generate_password_hash, check_password_hash
-from database.db import get_db, init_db, seed_db, get_user_by_email, create_user, get_user_by_id
+from database.db import get_db, init_db, seed_db, get_user_by_email, create_user, get_user_by_id, get_expenses_by_user_id
 
 app = Flask(__name__)
 app.secret_key = "dev-secret-change-in-prod"
@@ -12,11 +12,15 @@ app.secret_key = "dev-secret-change-in-prod"
 
 @app.route("/")
 def landing():
+    if session.get("user_id"):
+        return redirect(url_for("profile"))
     return render_template("landing.html")
 
 
 @app.route("/register", methods=["GET", "POST"])
 def register():
+    if session.get("user_id"):
+        return redirect(url_for("profile"))
     if request.method == "GET":
         return render_template("register.html")
 
@@ -51,6 +55,8 @@ def register():
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
+    if session.get("user_id"):
+        return redirect(url_for("profile"))
     if request.method == "GET":
         return render_template("login.html")
 
@@ -94,7 +100,11 @@ def logout():
 
 @app.route("/profile")
 def profile():
-    return "Profile page — coming in Step 4"
+    if not session.get("user_id"):
+        return redirect(url_for("login"))
+    user     = get_user_by_id(session["user_id"])
+    expenses = get_expenses_by_user_id(session["user_id"])
+    return render_template("profile.html", user=user, expenses=expenses)
 
 
 @app.route("/expenses/add")

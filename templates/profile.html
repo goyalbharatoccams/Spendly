@@ -1,0 +1,130 @@
+{% extends "base.html" %}
+
+{% block title %}Profile — Spendly{% endblock %}
+
+{% block content %}
+
+{% set total = namespace(amount=0) %}
+{% for e in expenses %}{% set total.amount = total.amount + e["amount"] %}{% endfor %}
+{% set count = expenses | length %}
+
+<div class="pg-profile">
+    <div class="pg-inner">
+
+        <!-- Top bar -->
+        <div class="pg-topbar">
+            <div class="pg-user">
+                <div class="pg-avatar">{{ user["name"][0] | upper }}</div>
+                <div class="pg-user-info">
+                    <h1 class="pg-username">{{ user["name"] }}</h1>
+                    <span class="pg-email">{{ user["email"] }}</span>
+                </div>
+            </div>
+            <a href="{{ url_for('add_expense') }}" class="pg-btn-add">
+                <i data-lucide="plus"></i>
+                Add expense
+            </a>
+        </div>
+
+        <!-- Stat cards -->
+        <div class="pg-stats">
+            <div class="pg-stat-card">
+                <div class="pg-stat-icon pg-stat-icon--green">
+                    <i data-lucide="indian-rupee"></i>
+                </div>
+                <div class="pg-stat-body">
+                    <p class="pg-stat-label">Total spent</p>
+                    <p class="pg-stat-value">₹{{ "%.2f" | format(total.amount) }}</p>
+                </div>
+            </div>
+            <div class="pg-stat-card">
+                <div class="pg-stat-icon pg-stat-icon--blue">
+                    <i data-lucide="receipt"></i>
+                </div>
+                <div class="pg-stat-body">
+                    <p class="pg-stat-label">Expenses</p>
+                    <p class="pg-stat-value">{{ count }}</p>
+                </div>
+            </div>
+            <div class="pg-stat-card">
+                <div class="pg-stat-icon pg-stat-icon--amber">
+                    <i data-lucide="trending-up"></i>
+                </div>
+                <div class="pg-stat-body">
+                    <p class="pg-stat-label">Avg per expense</p>
+                    <p class="pg-stat-value">
+                        {% if count > 0 %}₹{{ "%.2f" | format(total.amount / count) }}{% else %}—{% endif %}
+                    </p>
+                </div>
+            </div>
+            <div class="pg-stat-card">
+                <div class="pg-stat-icon pg-stat-icon--purple">
+                    <i data-lucide="calendar"></i>
+                </div>
+                <div class="pg-stat-body">
+                    <p class="pg-stat-label">Member since</p>
+                    <p class="pg-stat-value pg-stat-value--sm">{{ user["created_at"][:10] }}</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Expense table -->
+        <div class="pg-card">
+            <div class="pg-card-header">
+                <div class="pg-card-title">
+                    <i data-lucide="list"></i>
+                    <span>All expenses</span>
+                </div>
+                <span class="pg-count-pill">{{ count }} total</span>
+            </div>
+
+            {% if expenses %}
+            <div class="pg-table-wrap">
+                <table class="pg-table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Category</th>
+                            <th>Description</th>
+                            <th class="pg-th-right">Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for expense in expenses %}
+                        <tr>
+                            <td class="pg-td-date">
+                                <i data-lucide="calendar-days"></i>
+                                {{ expense["date"] }}
+                            </td>
+                            <td>
+                                <span class="pg-badge pg-badge--{{ expense['category'] | lower }}">
+                                    {{ expense["category"] }}
+                                </span>
+                            </td>
+                            <td class="pg-td-desc">{{ expense["description"] or "—" }}</td>
+                            <td class="pg-td-amount">₹{{ "%.2f" | format(expense["amount"]) }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <div class="pg-empty">
+                <div class="pg-empty-icon"><i data-lucide="inbox"></i></div>
+                <p class="pg-empty-title">No expenses yet</p>
+                <p class="pg-empty-sub">Add your first expense to get started.</p>
+                <a href="{{ url_for('add_expense') }}" class="pg-btn-add pg-btn-add--center">
+                    <i data-lucide="plus"></i> Add expense
+                </a>
+            </div>
+            {% endif %}
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>lucide.createIcons();</script>
+{% endblock %}
