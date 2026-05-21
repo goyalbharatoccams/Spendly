@@ -1,6 +1,9 @@
+from datetime import date
 from flask import Flask, render_template, request, redirect, url_for, session
 from werkzeug.security import generate_password_hash, check_password_hash
-from database.db import get_db, init_db, seed_db, get_user_by_email, create_user, get_user_by_id, get_expenses_by_user_id
+from database.db import get_db, init_db, seed_db, get_user_by_email, create_user, get_user_by_id, get_expenses_by_user_id, create_expense
+
+CATEGORIES = ["Food", "Transport", "Bills", "Health", "Entertainment", "Shopping", "Other"]
 
 app = Flask(__name__)
 app.secret_key = "dev-secret-change-in-prod"
@@ -107,9 +110,43 @@ def profile():
     return render_template("profile.html", user=user, expenses=expenses)
 
 
-@app.route("/expenses/add")
+@app.route("/expenses/add", methods=["GET", "POST"])
 def add_expense():
-    return "Add expense — coming in Step 7"
+    if not session.get("user_id"):
+        return redirect(url_for("login"))
+
+    if request.method == "GET":
+        return render_template("add_expense.html",
+                               categories=CATEGORIES,
+                               date=date.today().isoformat())
+
+    amount_str  = request.form.get("amount", "").strip()
+    category    = request.form.get("category", "").strip()
+    date_str    = request.form.get("date", "").strip()
+    description = request.form.get("description", "").strip() or None
+
+    def redisplay(error):
+        return render_template("add_expense.html",
+                               categories=CATEGORIES,
+                               error=error,
+                               amount=amount_str, category=category,
+                               date=date_str, description=description)
+
+    try:
+        amount = float(amount_str)
+        if amount <= 0:
+            raise ValueError
+    except ValueError:
+        return redisplay("Amount must be a positive number.")
+
+    if category not in CATEGORIES:
+        return redisplay("Please select a valid category.")
+
+    if not date_str:
+        return redisplay("Date is required.")
+
+    create_expense(session["user_id"], amount, category, date_str, description)
+    return redirect(url_for("profile"))
 
 
 @app.route("/expenses/<int:id>/edit")

@@ -68,6 +68,18 @@ def seed_db():
     conn.close()
 
 
+def create_expense(user_id, amount, category, date, description):
+    conn = get_db()
+    conn.execute(
+        "INSERT INTO expenses (user_id, amount, category, date, description) VALUES (?, ?, ?, ?, ?)",
+        (user_id, amount, category, date, description),
+    )
+    conn.commit()
+    expense_id = conn.execute("SELECT last_insert_rowid()").fetchone()[0]
+    conn.close()
+    return expense_id
+
+
 def get_expenses_by_user_id(user_id):
     conn = get_db()
     expenses = conn.execute(
