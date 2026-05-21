@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block title %}Page Name — Spendly{% endblock %}
+
+{% block content %}
+
+{#
+  Template: Static content page
+  Use for: Terms, Privacy Policy, About, FAQ, Help, any document-style page
+  Existing classes used — no new CSS needed for this layout:
+    .terms-page, .terms-inner, .terms-section, .last-updated
+#}
+
+<section class="terms-page">
+  <div class="terms-inner">
+
+    <h1>Page Title</h1>
+    <p class="last-updated">Last updated: May 2026</p>
+
+    <div class="terms-section">
+      <h2>Section One</h2>
+      <p>
+        Section body text goes here. Write in plain language. Keep
+        paragraphs short and scannable — aim for 3–5 sentences per paragraph.
+      </p>
+    </div>
+
+    <div class="terms-section">
+      <h2>Section Two</h2>
+      <p>Another section of content.</p>
+      <ul>
+        <li>Bullet point one explaining a specific detail.</li>
+        <li>Bullet point two explaining another detail.</li>
+        <li>Bullet point three for a third detail.</li>
+      </ul>
+    </div>
+
+    <div class="terms-section">
+      <h2>Section Three</h2>
+      <p>
+        More body content. Link to related pages where relevant:
+        see our <a href="{{ url_for('privacy') }}">Privacy Policy</a>.
+      </p>
+    </div>
+
+    <div class="terms-section">
+      <h2>Contact</h2>
+      <p>
+        Questions about this page? Email us at
+        <a href="mailto:hello@spendly.app">hello@spendly.app</a>
+        and we'll respond within 5 business days.
+      </p>
+    </div>
+
+  </div>
+</section>
+
+{% endblock %}
