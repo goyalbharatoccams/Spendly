@@ -1045,6 +1045,27 @@ a { color: inherit; text-decoration: none; }
     font-variant-numeric: tabular-nums;
 }
 
+.pg-td-actions { text-align: right; width: 48px; }
+
+.pg-btn-edit {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 6px;
+    color: var(--ink-muted);
+    text-decoration: none;
+    transition: background 0.15s, color 0.15s;
+}
+
+.pg-btn-edit:hover {
+    background: var(--border-soft);
+    color: var(--primary);
+}
+
+.pg-btn-edit svg { width: 14px; height: 14px; stroke: currentColor; }
+
 /* Category badges */
 .pg-badge {
     display: inline-block;

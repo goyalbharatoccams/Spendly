@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}Add Expense — Spendly{% endblock %}
+{% block title %}Edit Expense — Spendly{% endblock %}
 
 {% block content %}
 
@@ -13,10 +13,10 @@
                 <i data-lucide="arrow-left"></i>
                 <span>Back</span>
             </a>
-            <h1 class="ae-page-title">New Expense</h1>
+            <h1 class="ae-page-title">Edit Expense</h1>
         </div>
 
-        <form method="POST" action="{{ url_for('add_expense') }}" class="ae-form">
+        <form method="POST" action="{{ url_for('edit_expense', expense_id=expense_id) }}" class="ae-form">
 
             {% if error %}
             <div class="ae-error">
@@ -134,7 +134,7 @@
                 <a href="{{ url_for('profile') }}" class="ae-btn-ghost">Cancel</a>
                 <button type="submit" class="ae-btn-primary">
                     <i data-lucide="check"></i>
-                    Save Expense
+                    Save Changes
                 </button>
             </div>
 
@@ -147,7 +147,6 @@
 {% block scripts %}
 <script>
 lucide.createIcons();
-// Keep amount input formatted nicely
 document.getElementById('amount').addEventListener('blur', function () {
     if (this.value && parseFloat(this.value) > 0) {
         this.value = parseFloat(this.value).toFixed(2);

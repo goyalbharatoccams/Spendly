@@ -1,7 +1,7 @@
 from datetime import date
-from flask import Flask, render_template, request, redirect, url_for, session
+from flask import Flask, render_template, request, redirect, url_for, session, abort
 from werkzeug.security import generate_password_hash, check_password_hash
-from database.db import get_db, init_db, seed_db, get_user_by_email, create_user, get_user_by_id, get_expenses_by_user_id, create_expense
+from database.db import get_db, init_db, seed_db, get_user_by_email, create_user, get_user_by_id, get_expenses_by_user_id, create_expense, get_expense_by_id, update_expense
 
 CATEGORIES = ["Food", "Transport", "Bills", "Health", "Entertainment", "Shopping", "Other"]
 
@@ -115,10 +115,13 @@ def add_expense():
     if not session.get("user_id"):
         return redirect(url_for("login"))
 
+    today = date.today().isoformat()
+
     if request.method == "GET":
         return render_template("add_expense.html",
                                categories=CATEGORIES,
-                               date=date.today().isoformat())
+                               today=today,
+                               date=today)
 
     amount_str  = request.form.get("amount", "").strip()
     category    = request.form.get("category", "").strip()
@@ -128,6 +131,7 @@ def add_expense():
     def redisplay(error):
         return render_template("add_expense.html",
                                categories=CATEGORIES,
+                               today=today,
                                error=error,
                                amount=amount_str, category=category,
                                date=date_str, description=description)
@@ -149,9 +153,58 @@ def add_expense():
     return redirect(url_for("profile"))
 
 
-@app.route("/expenses/<int:id>/edit")
-def edit_expense(id):
-    return "Edit expense — coming in Step 8"
+@app.route("/expenses/<int:expense_id>/edit", methods=["GET", "POST"])
+def edit_expense(expense_id):
+    if not session.get("user_id"):
+        return redirect(url_for("login"))
+
+    expense = get_expense_by_id(expense_id)
+    if expense is None:
+        abort(404)
+    if expense["user_id"] != session["user_id"]:
+        abort(403)
+
+    today = date.today().isoformat()
+
+    if request.method == "GET":
+        return render_template("edit_expense.html",
+                               categories=CATEGORIES,
+                               today=today,
+                               amount=expense["amount"],
+                               category=expense["category"],
+                               date=expense["date"],
+                               description=expense["description"],
+                               expense_id=expense_id)
+
+    amount_str  = request.form.get("amount", "").strip()
+    category    = request.form.get("category", "").strip()
+    date_str    = request.form.get("date", "").strip()
+    description = request.form.get("description", "").strip() or None
+
+    def redisplay(error):
+        return render_template("edit_expense.html",
+                               categories=CATEGORIES,
+                               today=today,
+                               error=error,
+                               amount=amount_str, category=category,
+                               date=date_str, description=description,
+                               expense_id=expense_id)
+
+    try:
+        amount = float(amount_str)
+        if amount <= 0:
+            raise ValueError
+    except ValueError:
+        return redisplay("Amount must be a positive number.")
+
+    if category not in CATEGORIES:
+        return redisplay("Please select a valid category.")
+
+    if not date_str:
+        return redisplay("Date is required.")
+
+    update_expense(expense_id, session["user_id"], amount, category, date_str, description)
+    return redirect(url_for("profile"))
 
 
 @app.route("/expenses/<int:id>/delete")
