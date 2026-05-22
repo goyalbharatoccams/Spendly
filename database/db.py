@@ -123,6 +123,18 @@ def update_expense(expense_id, user_id, amount, category, date, description):
     return rows_affected
 
 
+def delete_expense(expense_id, user_id):
+    conn = get_db()
+    cursor = conn.execute(
+        "DELETE FROM expenses WHERE id = ? AND user_id = ?",
+        (expense_id, user_id),
+    )
+    conn.commit()
+    rows_affected = cursor.rowcount
+    conn.close()
+    return rows_affected
+
+
 def create_user(name, email, password_hash):
     conn = get_db()
     conn.execute(
