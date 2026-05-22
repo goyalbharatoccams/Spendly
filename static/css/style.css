@@ -1045,7 +1045,7 @@ a { color: inherit; text-decoration: none; }
     font-variant-numeric: tabular-nums;
 }
 
-.pg-td-actions { text-align: right; width: 48px; }
+.pg-td-actions { text-align: right; width: 80px; }
 
 .pg-btn-edit {
     display: inline-flex;
@@ -1065,6 +1065,27 @@ a { color: inherit; text-decoration: none; }
 }
 
 .pg-btn-edit svg { width: 14px; height: 14px; stroke: currentColor; }
+
+.pg-btn-delete {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 6px;
+    color: var(--ink-muted);
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+}
+
+.pg-btn-delete:hover {
+    background: var(--danger-light);
+    color: var(--danger);
+}
+
+.pg-btn-delete svg { width: 14px; height: 14px; stroke: currentColor; }
 
 /* Category badges */
 .pg-badge {
