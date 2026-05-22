@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block title %}Analytics — Spendly{% endblock %}
+
+{% block content %}
+<div class="cs-page">
+    <div class="cs-inner">
+        <div class="cs-card">
+
+            <div class="cs-icon-wrap">
+                <i data-lucide="bar-chart-2"></i>
+            </div>
+
+            <span class="cs-badge">
+                <span class="cs-badge-dot"></span>
+                Coming Soon
+            </span>
+
+            <h1 class="cs-title">Analytics</h1>
+
+            <p class="cs-desc">
+                Powerful insights into your spending habits are on their way.
+                Visualise trends, break down categories, and understand where
+                your money goes — all in one place.
+            </p>
+
+            <div class="cs-features">
+                <div class="cs-feature">
+                    <div class="cs-feature-icon">
+                        <i data-lucide="trending-up"></i>
+                    </div>
+                    <span class="cs-feature-label">Spending trends</span>
+                </div>
+                <div class="cs-feature">
+                    <div class="cs-feature-icon">
+                        <i data-lucide="pie-chart"></i>
+                    </div>
+                    <span class="cs-feature-label">Category breakdown</span>
+                </div>
+                <div class="cs-feature">
+                    <div class="cs-feature-icon">
+                        <i data-lucide="calendar"></i>
+                    </div>
+                    <span class="cs-feature-label">Monthly reports</span>
+                </div>
+            </div>
+
+            <a href="{{ url_for('profile') }}" class="cs-back-btn">
+                <i data-lucide="arrow-left"></i>
+                Back to Dashboard
+            </a>
+
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>lucide.createIcons();</script>
+{% endblock %}
