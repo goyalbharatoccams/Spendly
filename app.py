@@ -1,3 +1,4 @@
+import os
 from datetime import date
 from flask import Flask, render_template, request, redirect, url_for, session, abort
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -6,7 +7,7 @@ from database.db import get_db, init_db, seed_db, get_user_by_email, create_user
 CATEGORIES = ["Food", "Transport", "Bills", "Health", "Entertainment", "Shopping", "Other"]
 
 app = Flask(__name__)
-app.secret_key = "dev-secret-change-in-prod"
+app.secret_key = os.environ.get("SECRET_KEY", "dev-secret-change-in-prod")
 
 
 # ------------------------------------------------------------------ #
@@ -235,4 +236,5 @@ with app.app_context():
 
 
 if __name__ == "__main__":
-    app.run(debug=True, port=5001)
+    port = int(os.environ.get("PORT", 5001))
+    app.run(host="0.0.0.0", port=port, debug=os.environ.get("FLASK_DEBUG", "0") == "1")
